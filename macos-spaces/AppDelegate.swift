@@ -31,7 +31,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusBar.menu = menu
         statusBar.button?.title = "Presses"
         
-        // statusBar.button?.image = NSImage(named: "sc.png")
+        
+        
+        let img: NSImage = NSImage(size: NSSize.init(width: 20.0, height: 20.0))
+        
+        let rect: NSRect = NSMakeRect(0, 0, 20, 20)
+        let red = NSColor.white
+        
+        
+        img.lockFocus()
+        
+        let path: NSBezierPath = NSBezierPath(roundedRect: rect, xRadius: 5, yRadius: 5)
+        
+        red.set()
+        
+        path.fill()
+        
+        img.unlockFocus()
+        
+        statusBar.button?.image = img
+        
+        
+        
+        
         
         menuItem.title = "Clicked"
         menu.addItem(menuItem)

@@ -26,34 +26,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: 100)
     var menu: NSMenu = NSMenu()
     var menuItem: NSMenuItem = NSMenuItem()
-    
+
     override func awakeFromNib() {
         statusBar.menu = menu
         statusBar.button?.title = "Presses"
         
-        statusBar.button?.image = generateImage()
+        statusBar.button?.image = generateImage(activeSpace: 4)
         
         menuItem.title = "Collin's app"
         menu.addItem(menuItem)
     }
     
-    func generateImage() -> NSImage {
+    func generateImage(activeSpace: Int) -> NSImage {
         let img: NSImage = NSImage(size: NSSize.init(width: 68.0, height: 15.0))
         
-        let bColor = NSColor.white
-        let tColor = NSColor.black
-        
         var text: String
-        let font = NSFont(name: "Helvetica Bold", size: 12.0)
-        let textStyle = NSMutableParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
-        textStyle.alignment = NSTextAlignment.center
-        
-        
-        let attributeDict: [NSAttributedString.Key : Any] = [
-            .font: font!,
-            .foregroundColor: tColor,
-            .paragraphStyle: textStyle,
-            ]
+        var bColor: NSColor
+        var tColor: NSColor
         
         for i in 1...4 {
             text = "\(i)"
@@ -65,10 +54,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             img.lockFocus()
             
-            bColor.set()
+            NSColor.white.set()
             path.fill()
             
             img.unlockFocus()
+            
+            if i == activeSpace {
+                let iRect = NSMakeRect(1 + CGFloat(i-1)*17.0, 1, 13, 13)
+                let iPath: NSBezierPath = NSBezierPath(roundedRect: iRect, xRadius: 2.5, yRadius: 2.5)
+                
+                tColor = NSColor.white
+                bColor = NSColor.black
+                
+                img.lockFocus()
+                
+                bColor.set()
+                iPath.fill()
+                
+                img.unlockFocus()
+            } else {
+                tColor = NSColor.black
+                bColor = NSColor.white
+            }
+        
+            let font = NSFont(name: "Helvetica Bold", size: 12.0)
+            let textStyle = NSMutableParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
+            textStyle.alignment = NSTextAlignment.center
+            
+            
+            let attributeDict: [NSAttributedString.Key : Any] = [
+                .font: font!,
+                .foregroundColor: tColor,
+                .paragraphStyle: textStyle,
+                ]
             
             img.lockFocus()
             
@@ -80,12 +98,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return img
     }
     
-    func update(_ text: String) {
-        statusBar.button?.title = "\(text)"
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let location = NSString(string:"~/Library/Preferences/com.apple.spaces.plist").expandingTildeInPath
+        let fileContent = NSDictionary(contentsOfFile: location)!
+        
+        let current = ((fileContent["SpacesDisplayConfiguration"] as! NSDictionary)["Management Data"] as! NSDictionary)["Monitors"] as! NSArray
+        
+        let space = ((current[0] as! NSDictionary)["Current Space"] as! NSDictionary)["ManagedSpaceID"]!
+        
+ 
+        print("\(space)")
     }
     
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+    @objc func updateSpace() {
+        print("YO!")
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

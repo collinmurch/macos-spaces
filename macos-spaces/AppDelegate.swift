@@ -26,12 +26,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: 100)
     var menu: NSMenu = NSMenu()
     var menuItem: NSMenuItem = NSMenuItem()
+    
+    let path = "~/Library/Preferences/com.apple.spaces.plist"
 
     override func awakeFromNib() {
         statusBar.menu = menu
         statusBar.button?.title = "Presses"
         
-        statusBar.button?.image = generateImage(activeSpace: 4)
+        let space = getCurrentSpace()
+        
+        statusBar.button?.image = generateImage(activeSpace: space)
         
         menuItem.title = "Collin's app"
         menu.addItem(menuItem)
@@ -98,20 +102,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return img
     }
     
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let location = NSString(string:"~/Library/Preferences/com.apple.spaces.plist").expandingTildeInPath
+    func getCurrentSpace() -> Int {
+        let location = NSString(string: path).expandingTildeInPath
         let fileContent = NSDictionary(contentsOfFile: location)!
         
-        let current = ((fileContent["SpacesDisplayConfiguration"] as! NSDictionary)["Management Data"] as! NSDictionary)["Monitors"] as! NSArray
+        // Doing it this way is the pits but I can't find a better way
+        // I hate intermediate object declaration
+        let data = (((fileContent["SpacesDisplayConfiguration"] as! NSDictionary)["Management Data"] as! NSDictionary)["Monitors"] as! NSArray)[0] as! NSDictionary
         
-        let space = ((current[0] as! NSDictionary)["Current Space"] as! NSDictionary)["ManagedSpaceID"]!
+        // Grab ID of current space, but this one doesn't necessarily coorespond to the space
+        // Just gives a starting point. We have to make it relative
+        let currentSpaceID = (data["Current Space"] as! NSDictionary)["ManagedSpaceID"] as! Int
+
+        let spaceList = data["Spaces"] as! NSArray
         
- 
-        print("\(space)")
-    }
-    
-    @objc func updateSpace() {
-        print("YO!")
+        // Iterate through all created spaces
+        // If space ID is current ID, then return it's position in the list (fixes dumb ID assignments)
+        for (i, item) in spaceList.enumerated() {
+            let spaceID = (item as! NSDictionary)["ManagedSpaceID"] as! Int
+            
+            if spaceID == currentSpaceID {
+                return i + 1
+            }
+        }
+        
+        return 4
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

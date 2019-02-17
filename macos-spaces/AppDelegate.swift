@@ -49,14 +49,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         var bColor: NSColor
         var tColor: NSColor
         
+        // Make new number rect for each space
         for i in 1...totalSpaces {
             text = "\(i)"
             
+            // Create a rect with a text box inside it
             let rect = NSMakeRect(0.0 + CGFloat(i-1)*17.0, 0, 15, 15)
             let textRect = NSMakeRect(-5 + CGFloat(i-1)*17.0, -11, 25, 25)
             
+            // Make outer rect have rounded corners
             let path: NSBezierPath = NSBezierPath(roundedRect: rect, xRadius: 2.5, yRadius: 2.5)
             
+            // Select image and make border rounded rect white
             img.lockFocus()
             
             NSColor.white.set()
@@ -64,13 +68,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             
             img.unlockFocus()
             
+            // If you get to the active space, then do the following (special)
             if i == activeSpace {
+                
+                // Create new rounded rect inside of original, to be background color
                 let iRect = NSMakeRect(1 + CGFloat(i-1)*17.0, 1, 13, 13)
                 let iPath: NSBezierPath = NSBezierPath(roundedRect: iRect, xRadius: 2.5, yRadius: 2.5)
                 
+                // Invert colors
                 tColor = NSColor.white
                 bColor = NSColor.black
                 
+                // Select rounded rect and fill with background color
                 img.lockFocus()
                 
                 bColor.set()
@@ -78,21 +87,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 
                 img.unlockFocus()
             } else {
+                
+                // Otherwise, set text as black and background as white
                 tColor = NSColor.black
                 bColor = NSColor.white
             }
         
+            // Font and text settings
             let font = NSFont(name: "Helvetica Bold", size: 12.0)
             let textStyle = NSMutableParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
             textStyle.alignment = NSTextAlignment.center
-            
-            
             let attributeDict: [NSAttributedString.Key : Any] = [
                 .font: font!,
                 .foregroundColor: tColor,
                 .paragraphStyle: textStyle,
                 ]
             
+            // Select image and draw in text
             img.lockFocus()
             
             text.draw(in: textRect, withAttributes: attributeDict)
@@ -128,6 +139,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         }
         
+        // If fails, then return something that can't be displayed
         return 0
     }
     

@@ -9,7 +9,7 @@
 import Cocoa
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: -1)
     var menu: NSMenu = NSMenu()
@@ -23,14 +23,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         workSpaceObserver()
         
         statusBar.menu = menu
-        
+    
         updateSpace()
         
         menuItem.title = "Collin's app"
         menu.addItem(menuItem)
     }
-    
-    if DispatchSource
     
     func workSpaceObserver() {
         workspace = NSWorkspace.shared
@@ -107,34 +105,40 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func updateSpace() {
         let space = getCurrentSpace()
         
+        print("Called")
+        
         statusBar.button?.image = generateImage(activeSpace: space, totalSpaces: 4)
     }
     
     func getCurrentSpace() -> Int {
-        let location = NSString(string: path).expandingTildeInPath
-        let fileContent = NSDictionary(contentsOfFile: location)!
+        // Both return CFArrays which are not fun to deal with
+        let allWindows = CGWindowListCopyWindowInfo(CGWindowListOption.optionAll, kCGNullWindowID)
+        let currentWindow = CGWindowListCopyWindowInfo(CGWindowListOption.optionOnScreenOnly, kCGNullWindowID)
         
-        // Doing it this way is the pits but I can't find a better way
-        // I hate intermediate object declaration
-        let data = (((fileContent["SpacesDisplayConfiguration"] as! NSDictionary)["Management Data"] as! NSDictionary)["Monitors"] as! NSArray)[0] as! NSDictionary
+        let allMatched = parseWindowData(String(describing: allWindows))
+        let currentMatched = parseWindowData(String(describing: currentWindow))[0]
         
-        // Grab ID of current space, but this one doesn't necessarily coorespond to the space
-        // Just gives a starting point. We have to make it relative
-        let currentSpaceID = (data["Current Space"] as! NSDictionary)["ManagedSpaceID"] as! Int
-
-        let spaceList = data["Spaces"] as! NSArray
-        
-        // Iterate through all created spaces
-        // If space ID is current ID, then return it's position in the list (fixes dumb ID assignments)
-        for (i, item) in spaceList.enumerated() {
-            let spaceID = (item as! NSDictionary)["ManagedSpaceID"] as! Int
-            
-            if spaceID == currentSpaceID {
-                return i + 1
+        for (i, item) in allMatched.enumerated() {
+            if item == currentMatched {
+                return 4-i
             }
         }
         
-        return 4
+        return 0
+    }
+    
+    func parseWindowData(_ text: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: "(?<=Desktop Picture - )(.*)(?=\\\")")
+            let results = regex.matches(in: text,
+                                        range: NSRange(text.startIndex..., in: text))
+            return results.map {
+                String(text[Range($0.range, in: text)!])
+            }
+        } catch let error {
+            print("invalid regex: \(error.localizedDescription)")
+            return []
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

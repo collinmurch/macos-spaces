@@ -28,6 +28,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         updateSpace()
         spaceObserver()
+        
+        print(totalSpaces)
     }
     
     func spaceObserver() {
@@ -43,7 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func generateImage(_ activeSpace: Int) -> NSImage {
-        let img: NSImage = NSImage(size: NSSize.init(width: 68.0, height: 15.0))
+        let img: NSImage = NSImage(size: NSSize.init(width: 17.0*Double(totalSpaces), height: 15.0))
         
         var text: String
         var bColor: NSColor

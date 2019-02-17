@@ -11,7 +11,7 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: 100)
+    var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: -1)
     var menu: NSMenu = NSMenu()
     var menuItem: NSMenuItem = NSMenuItem()
     
@@ -29,6 +29,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menuItem.title = "Collin's app"
         menu.addItem(menuItem)
     }
+    
+    if DispatchSource
     
     func workSpaceObserver() {
         workspace = NSWorkspace.shared

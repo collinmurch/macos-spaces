@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E9D511F2219F3FE008B29A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E9D511E2219F3FE008B29A0 /* Main.storyboard */; };
 		1EA4EF9B21F50CB7005E844B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4EF9A21F50CB7005E844B /* AppDelegate.swift */; };
 		1EA4EF9D21F50CB7005E844B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4EF9C21F50CB7005E844B /* ViewController.swift */; };
 		1EA4EF9F21F50CB8005E844B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EA4EF9E21F50CB8005E844B /* Assets.xcassets */; };
-		1EA4EFA221F50CB8005E844B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EA4EFA021F50CB8005E844B /* Main.storyboard */; };
 		1EA4EFAE21F50CB8005E844B /* macos_spacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4EFAD21F50CB8005E844B /* macos_spacesTests.swift */; };
 		1EA4EFB921F50CB8005E844B /* macos_spacesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4EFB821F50CB8005E844B /* macos_spacesUITests.swift */; };
 /* End PBXBuildFile section */
@@ -33,11 +33,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E9D511E2219F3FE008B29A0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = ../../../../../.Trash/Main.storyboard; sourceTree = "<group>"; };
 		1EA4EF9721F50CB7005E844B /* macos-spaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macos-spaces.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EA4EF9A21F50CB7005E844B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1EA4EF9C21F50CB7005E844B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1EA4EF9E21F50CB8005E844B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1EA4EFA121F50CB8005E844B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1EA4EFA321F50CB8005E844B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EA4EFA421F50CB8005E844B /* macos_spaces.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macos_spaces.entitlements; sourceTree = "<group>"; };
 		1EA4EFA921F50CB8005E844B /* macos-spacesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "macos-spacesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,10 +96,10 @@
 		1EA4EF9921F50CB7005E844B /* macos-spaces */ = {
 			isa = PBXGroup;
 			children = (
+				1E9D511E2219F3FE008B29A0 /* Main.storyboard */,
 				1EA4EF9A21F50CB7005E844B /* AppDelegate.swift */,
 				1EA4EF9C21F50CB7005E844B /* ViewController.swift */,
 				1EA4EF9E21F50CB8005E844B /* Assets.xcassets */,
-				1EA4EFA021F50CB8005E844B /* Main.storyboard */,
 				1EA4EFA321F50CB8005E844B /* Info.plist */,
 				1EA4EFA421F50CB8005E844B /* macos_spaces.entitlements */,
 			);
@@ -233,8 +233,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E9D511F2219F3FE008B29A0 /* Main.storyboard in Resources */,
 				1EA4EF9F21F50CB8005E844B /* Assets.xcassets in Resources */,
-				1EA4EFA221F50CB8005E844B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,17 +294,6 @@
 			targetProxy = 1EA4EFB521F50CB8005E844B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		1EA4EFA021F50CB8005E844B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1EA4EFA121F50CB8005E844B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1EA4EFBB21F50CB8005E844B /* Debug */ = {

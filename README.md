@@ -1,5 +1,5 @@
-HUGE thanks to:
+# macos-spaces
 
-https://github.com/gechr/WhichSpace
+A simple application that displays which desktop space is currently focused in a similar fashion to many Linux distributions.
 
-https://medium.com/@johnsundell/a-deep-dive-into-grand-central-dispatch-in-swift-dead7f6e1ca7
+Based on: [WhichSpace](https://github.com/gechr/WhichSpace)

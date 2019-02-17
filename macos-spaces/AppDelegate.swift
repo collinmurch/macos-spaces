@@ -31,6 +31,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func spaceObserver() {
+        
+        // Configure observer that fires when desktop space changes
         workspace = NSWorkspace.shared
         workspace.notificationCenter.addObserver(
             self,

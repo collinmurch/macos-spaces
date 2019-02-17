@@ -6,18 +6,6 @@
 //  Copyright © 2019 collinmurch. All rights reserved.
 //
 
-/*
- 
- Spaces notes - use app icon as the top menu bar choice and then let user prioritize
- what application they want to be shown -- right now images are working so maybe use that.
- 
- Also -- implement choice between numbers and icons -- find away to programitacally generate
- the number icons for the status bar.
- 
- SC.PNG was deleted. Oops.
- 
- */
-
 import Cocoa
 
 @NSApplicationMain
@@ -27,28 +15,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var menu: NSMenu = NSMenu()
     var menuItem: NSMenuItem = NSMenuItem()
     
+    @IBOutlet weak var workspace: NSWorkspace!
+    
     let path = "~/Library/Preferences/com.apple.spaces.plist"
 
     override func awakeFromNib() {
+        workSpaceObserver()
+        
         statusBar.menu = menu
-        statusBar.button?.title = "Presses"
         
-        let space = getCurrentSpace()
-        
-        statusBar.button?.image = generateImage(activeSpace: space)
+        updateSpace()
         
         menuItem.title = "Collin's app"
         menu.addItem(menuItem)
     }
     
-    func generateImage(activeSpace: Int) -> NSImage {
+    func workSpaceObserver() {
+        workspace = NSWorkspace.shared
+        workspace.notificationCenter.addObserver(
+            self,
+            selector: #selector(AppDelegate.updateSpace),
+            name: NSWorkspace.activeSpaceDidChangeNotification,
+            object: workspace
+        )
+    }
+    
+    func generateImage(activeSpace: Int, totalSpaces: Int) -> NSImage {
         let img: NSImage = NSImage(size: NSSize.init(width: 68.0, height: 15.0))
         
         var text: String
         var bColor: NSColor
         var tColor: NSColor
         
-        for i in 1...4 {
+        for i in 1...totalSpaces {
             text = "\(i)"
             
             let rect = NSMakeRect(0.0 + CGFloat(i-1)*17.0, 0, 15, 15)
@@ -100,6 +99,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         return img
+    }
+    
+    // Needs to be available in the Objective-C runtime for notification center
+    @objc func updateSpace() {
+        let space = getCurrentSpace()
+        
+        statusBar.button?.image = generateImage(activeSpace: space, totalSpaces: 4)
     }
     
     func getCurrentSpace() -> Int {

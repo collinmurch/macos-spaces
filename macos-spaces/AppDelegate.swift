@@ -15,6 +15,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var menu: NSMenu = NSMenu()
     var menuItem: NSMenuItem = NSMenuItem()
     
+    var totalSpaces: Int = 1
+    
     @IBOutlet weak var workspace: NSWorkspace!
     
     let path = "~/Library/Preferences/com.apple.spaces.plist"
@@ -40,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         )
     }
     
-    func generateImage(activeSpace: Int, totalSpaces: Int) -> NSImage {
+    func generateImage(_ activeSpace: Int) -> NSImage {
         let img: NSImage = NSImage(size: NSSize.init(width: 68.0, height: 15.0))
         
         var text: String
@@ -103,11 +105,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     // Needs to be available in the Objective-C runtime for notification center
     @objc func updateSpace() {
-        let space = getCurrentSpace()
+        let activeSpace = getCurrentSpace()
         
-        print("Called")
-        
-        statusBar.button?.image = generateImage(activeSpace: space, totalSpaces: 4)
+        statusBar.button?.image = generateImage(activeSpace)
     }
     
     func getCurrentSpace() -> Int {
@@ -115,18 +115,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let allWindows = CGWindowListCopyWindowInfo(CGWindowListOption.optionAll, kCGNullWindowID)
         let currentWindow = CGWindowListCopyWindowInfo(CGWindowListOption.optionOnScreenOnly, kCGNullWindowID)
         
+        // Get all desktop pictures in order, and grab currently active desktop picture
         let allMatched = parseWindowData(String(describing: allWindows))
         let currentMatched = parseWindowData(String(describing: currentWindow))[0]
         
+        totalSpaces = allMatched.count
+        
+        // Since pattern returns matches in reverse order, subtract matched index from total
         for (i, item) in allMatched.enumerated() {
             if item == currentMatched {
-                return 4-i
+                return totalSpaces-i
             }
         }
         
         return 0
     }
     
+    // Use regex to get the name of the desktop picture
     func parseWindowData(_ text: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: "(?<=Desktop Picture - )(.*)(?=\\\")")

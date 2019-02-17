@@ -11,22 +11,19 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
-    var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: -1)
-    var menu: NSMenu = NSMenu()
-    var menuItem: NSMenuItem = NSMenuItem()
-    
+    let path = "~/Library/Preferences/com.apple.spaces.plist"
     var totalSpaces: Int = 1
     
-    @IBOutlet weak var workspace: NSWorkspace!
+    var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: -1)
+    var menu: NSMenu = NSMenu()
     
-    let path = "~/Library/Preferences/com.apple.spaces.plist"
+    @IBOutlet weak var workspace: NSWorkspace!
 
     override func awakeFromNib() {
         NSApplication.shared.setActivationPolicy(.accessory)
         
         statusBar.menu = menu
-        menuItem.title = "@collinmurch"
-        menu.addItem(menuItem)
+        menu.addItem(withTitle: "@collinmurch", action: nil, keyEquivalent: "")
         menu.addItem(withTitle: "Quit macos-spaces", action: #selector (quitClicked), keyEquivalent: "")
         
         updateSpace()

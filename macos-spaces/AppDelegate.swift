@@ -28,8 +28,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         updateSpace()
         spaceObserver()
-        
-        print(totalSpaces)
     }
     
     func spaceObserver() {
@@ -134,9 +132,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         totalSpaces = allMatched.count
         
+        
         // Since pattern returns matches in reverse order, subtract matched index from total
         for (i, item) in allMatched.enumerated() {
             if item == currentMatched {
+                print(totalSpaces, i)
                 return totalSpaces-i
             }
         }

@@ -22,17 +22,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let path = "~/Library/Preferences/com.apple.spaces.plist"
 
     override func awakeFromNib() {
-        workSpaceObserver()
+        NSApplication.shared.setActivationPolicy(.accessory)
+        
+        spaceObserver()
         
         statusBar.menu = menu
     
         updateSpace()
         
-        menuItem.title = "Collin's app"
+        menuItem.title = "@collinmurch"
         menu.addItem(menuItem)
+        
+        menu.addItem(withTitle: "Quit macos-spaces", action: #selector (quitClicked), keyEquivalent: "")
     }
     
-    func workSpaceObserver() {
+    func spaceObserver() {
         workspace = NSWorkspace.shared
         workspace.notificationCenter.addObserver(
             self,
@@ -156,6 +160,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             print("invalid regex: \(error.localizedDescription)")
             return []
         }
+    }
+    
+    @objc func quitClicked() {
+        NSApplication.shared.terminate(self)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

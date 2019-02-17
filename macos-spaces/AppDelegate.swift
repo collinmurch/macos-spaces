@@ -24,16 +24,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     override func awakeFromNib() {
         NSApplication.shared.setActivationPolicy(.accessory)
         
-        spaceObserver()
-        
         statusBar.menu = menu
-    
-        updateSpace()
-        
         menuItem.title = "@collinmurch"
         menu.addItem(menuItem)
-        
         menu.addItem(withTitle: "Quit macos-spaces", action: #selector (quitClicked), keyEquivalent: "")
+        
+        updateSpace()
+        spaceObserver()
     }
     
     func spaceObserver() {

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E9D511F2219F3FE008B29A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E9D511E2219F3FE008B29A0 /* Main.storyboard */; };
+		1E49C602221DFB06005009C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E49C601221DFB06005009C9 /* Main.storyboard */; };
 		1EA4EF9B21F50CB7005E844B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4EF9A21F50CB7005E844B /* AppDelegate.swift */; };
 		1EA4EF9F21F50CB8005E844B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EA4EF9E21F50CB8005E844B /* Assets.xcassets */; };
 		1EA4EFAE21F50CB8005E844B /* macos_spacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4EFAD21F50CB8005E844B /* macos_spacesTests.swift */; };
@@ -32,7 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1E9D511E2219F3FE008B29A0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = ../../../../../.Trash/Main.storyboard; sourceTree = "<group>"; };
+		1E49C601221DFB06005009C9 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		1EA4EF9721F50CB7005E844B /* macos-spaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macos-spaces.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EA4EF9A21F50CB7005E844B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1EA4EF9E21F50CB8005E844B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -94,11 +94,11 @@
 		1EA4EF9921F50CB7005E844B /* macos-spaces */ = {
 			isa = PBXGroup;
 			children = (
-				1E9D511E2219F3FE008B29A0 /* Main.storyboard */,
 				1EA4EF9A21F50CB7005E844B /* AppDelegate.swift */,
 				1EA4EF9E21F50CB8005E844B /* Assets.xcassets */,
 				1EA4EFA321F50CB8005E844B /* Info.plist */,
 				1EA4EFA421F50CB8005E844B /* macos_spaces.entitlements */,
+				1E49C601221DFB06005009C9 /* Main.storyboard */,
 			);
 			path = "macos-spaces";
 			sourceTree = "<group>";
@@ -230,7 +230,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E9D511F2219F3FE008B29A0 /* Main.storyboard in Resources */,
+				1E49C602221DFB06005009C9 /* Main.storyboard in Resources */,
 				1EA4EF9F21F50CB8005E844B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

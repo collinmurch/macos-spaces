@@ -27,13 +27,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(withTitle: "Quit macos-spaces", action: #selector (quitClicked), keyEquivalent: "")
         
         updateSpace()
-        spaceObserver()
+        observers()
     }
     
-    func spaceObserver() {
+    func observers() {
         
         // Configure observer that fires when desktop space changes
         workspace = NSWorkspace.shared
+        
         workspace.notificationCenter.addObserver(
             self,
             selector: #selector(AppDelegate.updateSpace),
@@ -126,17 +127,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let allWindows = CGWindowListCopyWindowInfo(CGWindowListOption.optionAll, kCGNullWindowID)
         let currentWindow = CGWindowListCopyWindowInfo(CGWindowListOption.optionOnScreenOnly, kCGNullWindowID)
         
-        // Get all desktop pictures in order, and grab currently active desktop picture
+        // Get all desktop ID's in order, and grab currently active desktop
         let allMatched = parseWindowData(String(describing: allWindows))
         let currentMatched = parseWindowData(String(describing: currentWindow))[0]
         
         totalSpaces = allMatched.count
         
-        
         // Since pattern returns matches in reverse order, subtract matched index from total
         for (i, item) in allMatched.enumerated() {
             if item == currentMatched {
-                print(totalSpaces, i)
                 return totalSpaces-i
             }
         }
@@ -148,7 +147,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // Use regex to get the name of the desktop picture
     func parseWindowData(_ text: String) -> [String] {
         do {
-            let regex = try NSRegularExpression(pattern: "(?<=Desktop Picture - )(.*)(?=\\\")")
+            // For doing it by desktop image name (note: doesn't work when two desktops have same picture):
+            // let regex = try NSRegularExpression(pattern: "(?<=Desktop Picture - )(.*)(?=\\\")")
+             
+            let regex = try NSRegularExpression(pattern: "(?<=\\.[a-z]{2,4}\\\";\\n    kCGWindowNumber = )(.*)(?=;)")
+            
             let results = regex.matches(in: text,
                                         range: NSRange(text.startIndex..., in: text))
             return results.map {

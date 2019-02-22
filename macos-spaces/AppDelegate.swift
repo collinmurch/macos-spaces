@@ -152,6 +152,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let allMatched = parseWindowData(String(describing: allWindows))
         let currentMatched = parseWindowData(String(describing: currentWindow))[0]
         
+        print(allMatched)
+        
         totalSpaces = allMatched.count
         
         // Since pattern returns matches in reverse order, subtract matched index from total

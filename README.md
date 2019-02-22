@@ -4,7 +4,7 @@ A simple application that displays which desktop space is currently focused, lik
 
 <img src="https://i.imgur.com/MiGPKzB.jpg" width=15% height=15%></img>
 
-## Examples:
+## Examples
 
 <b>Dark Mode</b>
 
@@ -26,6 +26,14 @@ A simple application that displays which desktop space is currently focused, lik
 After downloading, unzip and place application in /Applications.
 
 _Optional:_ Add as a login item for your user in System Preferences to open on startup.
+
+***
+
+## Known Issues
+
+* When changing the order of desktop spaces, macos-spaces can take several minutes to recognize that a change in the order has taken place
+
+* Multi-monitor support may or may not work
 
 ***
 

@@ -17,7 +17,7 @@ A simple application that displays which desktop space is currently focused, lik
 
 ***
 
-##Installation
+## Installation
 
 <b>Download zip file from:</b> [Releases](https://github.com/collinmurch/macos-spaces/releases/tag/1.0)
 

@@ -11,6 +11,8 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
+    var darkMode: Bool = true
+    
     let path = "~/Library/Preferences/com.apple.spaces.plist"
     var totalSpaces: Int = 1
     
@@ -23,10 +25,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApplication.shared.setActivationPolicy(.accessory)
         
         statusBar.menu = menu
-        menu.addItem(withTitle: "@collinmurch", action: nil, keyEquivalent: "")
+        // menu.addItem(withTitle: "@collinmurch", action: nil, keyEquivalent: "")
         menu.addItem(withTitle: "Quit macos-spaces", action: #selector (quitClicked), keyEquivalent: "")
         
-        updateSpace()
+        updateUIMode()
         observers()
     }
     
@@ -41,9 +43,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             name: NSWorkspace.activeSpaceDidChangeNotification,
             object: workspace
         )
+        
+        DistributedNotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateUIMode(sender: )),
+            name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
+            object: nil
+        )
     }
     
-    func generateImage(_ activeSpace: Int) -> NSImage {
+    func generateImage(activeSpace: Int) -> NSImage {
         let img: NSImage = NSImage(size: NSSize.init(width: 17.0*Double(totalSpaces), height: 15.0))
         
         var text: String
@@ -54,20 +63,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         for i in 1...totalSpaces {
             text = "\(i)"
             
-            // Create a rect with a text box inside it
-            let rect = NSMakeRect(0.0 + CGFloat(i-1)*17.0, 0, 15, 15)
+            // Create a text box
             let textRect = NSMakeRect(-5 + CGFloat(i-1)*17.0, -11, 25, 25)
-            
-            // Make outer rect have rounded corners
-            let path: NSBezierPath = NSBezierPath(roundedRect: rect, xRadius: 2.5, yRadius: 2.5)
-            
-            // Select image and make border rounded rect white
-            img.lockFocus()
-            
-            NSColor.white.set()
-            path.fill()
-            
-            img.unlockFocus()
             
             // If you get to the active space, then do the following (special)
             if i == activeSpace {
@@ -76,9 +73,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 let iRect = NSMakeRect(1 + CGFloat(i-1)*17.0, 1, 13, 13)
                 let iPath: NSBezierPath = NSBezierPath(roundedRect: iRect, xRadius: 2.5, yRadius: 2.5)
                 
-                // Invert colors
-                tColor = NSColor.white
-                bColor = NSColor.black
+                // Check for dark mode, and set colors appropriately
+                if darkMode {
+                    tColor = NSColor.black
+                    bColor = NSColor.white
+                } else {
+                    tColor = NSColor.white
+                    bColor = NSColor.black
+                }
                 
                 // Select rounded rect and fill with background color
                 img.lockFocus()
@@ -88,10 +90,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 
                 img.unlockFocus()
             } else {
-                
-                // Otherwise, set text as black and background as white
-                tColor = NSColor.black
-                bColor = NSColor.white
+                // Otherwise, set text color appropriately (no need for background color)
+                if darkMode {
+                    tColor = NSColor.white
+                } else {
+                    tColor = NSColor.black
+                }
             }
         
             // Font and text settings
@@ -117,9 +121,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     // Needs to be available in the Objective-C runtime for notification center
     @objc func updateSpace() {
-        let activeSpace = getCurrentSpace()
+        let currentSpace = getCurrentSpace()
         
-        statusBar.button?.image = generateImage(activeSpace)
+        statusBar.button?.image = generateImage(activeSpace: currentSpace)
+    }
+    
+    @objc func updateUIMode(sender: AnyObject?=nil) {
+        let dictionary = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain);
+        if let interfaceStyle = dictionary?["AppleInterfaceStyle"] as? NSString {
+            self.darkMode = interfaceStyle.localizedCaseInsensitiveContains("dark")
+        } else {
+            self.darkMode = false
+        }
+        
+        updateSpace()
     }
     
     func getCurrentSpace() -> Int {
@@ -144,13 +159,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         return 0
     }
     
-    // Use regex to get the name of the desktop picture
+    // Use regex to get the desktop ID
     func parseWindowData(_ text: String) -> [String] {
         do {
             // For doing it by desktop image name (note: doesn't work when two desktops have same picture):
             // let regex = try NSRegularExpression(pattern: "(?<=Desktop Picture - )(.*)(?=\\\")")
-             
-            let regex = try NSRegularExpression(pattern: "(?<=\\.[a-z]{2,4}\\\";\\n    kCGWindowNumber = )(.*)(?=;)")
+            
+            let regex = try NSRegularExpression(
+                pattern: "(?<=\\.[a-z]{2,4}\\\";\\n    kCGWindowNumber = )(.*)(?=;)")
             
             let results = regex.matches(in: text,
                                         range: NSRange(text.startIndex..., in: text))

@@ -1,5 +1,7 @@
 # macos-spaces
 
+<img src="https://i.imgur.com/MiGPKzB.jpg" width=25% height=25%></img>
+
 A simple application that displays which desktop space is currently focused, like many Linux distributions.
 
 ## Examples:

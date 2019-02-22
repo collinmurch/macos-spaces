@@ -28,8 +28,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // menu.addItem(withTitle: "@collinmurch", action: nil, keyEquivalent: "")
         menu.addItem(withTitle: "Quit macos-spaces", action: #selector (quitClicked), keyEquivalent: "")
         
-        updateUIMode()
+        // Update UIMode (also generates new image), and configure observers
         observers()
+        updateUIMode()
     }
     
     func observers() {

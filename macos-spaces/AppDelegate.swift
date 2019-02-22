@@ -36,7 +36,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     // Configure observers for dark mode and space switch
     func observers() {
-        
         // Configure observer that fires when desktop space changes
         workspace = NSWorkspace.shared
         
@@ -57,7 +56,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     // Generate an image based on currently focused space
     func generateImage(activeSpace: Int) -> NSImage {
-        
         // Create an image that is the correct size to hold all space boxes
         let img: NSImage = NSImage(size: NSSize.init(width: 17.0*Double(totalSpaces), height: 15.0))
         

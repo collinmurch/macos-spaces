@@ -21,6 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     @IBOutlet weak var workspace: NSWorkspace!
 
+    // Configure application
     override func awakeFromNib() {
         NSApplication.shared.setActivationPolicy(.accessory)
         
@@ -33,6 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         updateUIMode()
     }
     
+    // Configure observers for dark mode and space switch
     func observers() {
         
         // Configure observer that fires when desktop space changes
@@ -53,7 +55,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         )
     }
     
+    // Generate an image based on currently focused space
     func generateImage(activeSpace: Int) -> NSImage {
+        
+        // Create an image that is the correct size to hold all space boxes
         let img: NSImage = NSImage(size: NSSize.init(width: 17.0*Double(totalSpaces), height: 15.0))
         
         var text: String
@@ -120,13 +125,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         return img
     }
     
-    // Needs to be available in the Objective-C runtime for notification center
+    // Update status bar icon
     @objc func updateSpace() {
         let currentSpace = getCurrentSpace()
         
         statusBar.button?.image = generateImage(activeSpace: currentSpace)
     }
     
+    // Grab status of light or dark modes
     @objc func updateUIMode(sender: AnyObject?=nil) {
         let dictionary = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain);
         if let interfaceStyle = dictionary?["AppleInterfaceStyle"] as? NSString {
@@ -138,6 +144,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         updateSpace()
     }
     
+    // Get int of focused space
     func getCurrentSpace() -> Int {
         // Both return CFArrays which are not fun to deal with
         let allWindows = CGWindowListCopyWindowInfo(CGWindowListOption.optionAll, kCGNullWindowID)
@@ -156,7 +163,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         }
         
-        // If fails, then return something that can't be displayed
+        // If fails, then return something that won't be displayed
         return 0
     }
     
@@ -180,6 +187,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
     
+    // Close application
     @objc func quitClicked() {
         NSApplication.shared.terminate(self)
     }

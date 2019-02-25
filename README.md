@@ -25,6 +25,8 @@ A simple application that displays which desktop space is currently focused, lik
 
 After downloading, unzip and place application in /Applications.
 
+I haven't gotten it signed yet, so you also have to go to System Preferences and allow apps from all developers.
+
 _Optional:_ Add as a login item for your user in System Preferences to open on startup.
 
 ***

@@ -21,7 +21,7 @@ A simple application that displays which desktop space is currently focused, lik
 
 ## Installation
 
-<b>Download zip file from:</b> [Releases](https://github.com/collinmurch/macos-spaces/releases/tag/1.0)
+<b>Download zip file from latest release:</b> [Releases](https://github.com/collinmurch/macos-spaces/releases/)
 
 After downloading, unzip and place application in /Applications.
 

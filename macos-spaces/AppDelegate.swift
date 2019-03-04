@@ -12,8 +12,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     var darkMode: Bool = true
-    
-    let path = "~/Library/Preferences/com.apple.spaces.plist"
+
     var totalSpaces: Int = 1
     
     var statusBar: NSStatusItem = NSStatusBar.system.statusItem(withLength: -1)
@@ -149,25 +148,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let currentWindow = CGWindowListCopyWindowInfo(CGWindowListOption.optionOnScreenOnly, kCGNullWindowID)
         
         // Get all desktop picture names in order, and grab currently active desktop
-        let allMatched = parseWindowData(String(describing: allWindows),
-                                        expression: "(?<=Desktop Picture - )(.*)(?=\\\")")
-        let currentMatched = parseWindowData(String(describing: currentWindow),
-                                        expression: "(?<=Desktop Picture - )(.*)(?=\\\")")
+        let allMatched = parseWindowData(String(describing: allWindows))
+        let currentMatched = parseWindowData(String(describing: currentWindow))
         
-        // Get ID of desktop picture (to prevent confusion when two desktops share a picture)
-        var allID = [String]()
-        for (i, _) in allMatched.enumerated() {
-            allID.append(parseWindowData(String(describing: allWindows),
-                                         expression: "(?<=\(allMatched[i])\";\\n    kCGWindowNumber = )(.*)(?=;)")[0])
-        }
-        let currentID = parseWindowData(String(describing: allWindows),
-                                        expression: "(?<=\(currentMatched[0])\";\\n    kCGWindowNumber = )(.*)(?=;)")
-        
-        totalSpaces = allID.count
+        totalSpaces = allMatched.count
         
         // Since pattern returns matches in reverse order, subtract matched index from total
-        for (i, item) in allID.enumerated() {
-            if item == currentID[0] {
+        for (i, item) in allMatched.enumerated() {
+            if item == currentMatched[0] {
                 return totalSpaces-i
             }
         }
@@ -176,20 +164,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         return 0
     }
     
-    // Use regex to parse key window data
-    func parseWindowData(_ text: String, expression: String) -> [String] {
-        do {
-            let regex = try NSRegularExpression(pattern: expression)
-            
-            let results = regex.matches(in: text,
-                                        range: NSRange(text.startIndex..., in: text))
-            return results.map {
-                String(text[Range($0.range, in: text)!])
+    // Get desktop ID
+    func parseWindowData(_ text: String) -> [String] {
+        let lines = text.components(separatedBy: CharacterSet.newlines)
+        var id = [String]()
+        
+        // Find line after "desktop" match, return all instances
+        for (i, _) in lines.enumerated() {
+            if lines[i].range(of:"Desktop Picture -") != nil {
+                id.append(lines[i+1])
             }
-        } catch let error {
-            print("invalid regex: \(error.localizedDescription)")
-            return []
         }
+        
+        return id
     }
     
     // Close application
